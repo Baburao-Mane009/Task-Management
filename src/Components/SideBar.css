@@ -1,0 +1,9 @@
+.SideBar{
+
+   
+     min-height: 100vh;
+     width: 45%;
+   
+    align-items: flex-start;
+    border: 2px dashed white;
+}

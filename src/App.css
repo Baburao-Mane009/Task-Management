@@ -1,0 +1,22 @@
+.main-content{
+  display:flex;
+  flex-direction: row;
+
+  gap:10%;
+  
+}
+
+.change-profile-btn {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 8px 12px;
+  background-color: #2563eb;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.change-profile-btn:hover {
+  background-color: #1d4ed8;
+}

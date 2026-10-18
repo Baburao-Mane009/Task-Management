@@ -1,0 +1,40 @@
+.TaskCard{
+    display: flex;
+    height: 200px;
+    width:45%;
+    flex-direction: column;
+    border: 2px solid white;
+
+    padding: 20px;
+
+    margin: auto;
+    border-radius: 15%;
+    
+
+    gap:20px;
+}
+.TaskCard p{
+  
+  
+    color:rgb(119, 85, 85);
+    display:block;
+}
+.TaskCard h3{
+   
+    color:red;
+     display:block;
+}
+.btn-complete{
+   
+   height:15%;
+    width: 45%;
+    background-color: rgb(14, 13, 13);
+    margin: 0 auto;
+ 
+    margin-bottom: 10px;
+   
+}
+
+
+
+
