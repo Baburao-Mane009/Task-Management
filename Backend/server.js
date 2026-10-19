@@ -215,17 +215,67 @@ app.post("/cloud-upload", authMiddleware, (req, res) => {
 
 app.get("/me", authMiddleware, async (req, res, next) => {
   try {
-    const user = await User.findById(req.user.userId)
-      .select("name email profilePic");
+               
+    const allowedFeild=["name",email];
+    const update={};
 
-    if (!user) {
+    for(const feild of allowedFeild){
+        if(feild!==undefined){
+            update[feild]=req.body[feild];
+        }
+    }
+
+        if(Object.keys(update)===0){
+            res.status(400).json({
+                message:"no valid feild provided for update";
+            })
+        }
+
+        if (
+      update.name !== undefined &&
+      (typeof update.name !== "string" || !update.name.trim())
+    ) {
+      return res.status(400).json({
+        message: "Name must be a non-empty string",
+      });
+    }
+     if(update.name!==undefined){
+        update.name=update.name.trim();
+     }
+     // Validate email if the user wants to update it
+if (updates.email !== undefined) {
+  if (
+    typeof updates.email !== "string" ||
+    !updates.email.trim()
+  ) {
+    return res.status(400).json({
+      message: "Email must be a non-empty string",
+    });
+  }
+
+  updates.email = updates.email.trim().toLowerCase();
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  if (!emailRegex.test(updates.email)) {
+    return res.status(400).json({
+      message: "Please provide a valid email address",
+    });
+  }
+}
+
+     const updateUser=await User.findByIdAndUpdate( req.user.userId,{$set:update},{runValidators:true,new:true}).select("name email profilePic");
+    
+ 
+    if (!updateUser) {
       return res.status(404).json({
         message: "User not found",
       });
     }
 
     res.status(200).json({
-      user,
+        message:"profile updated sucessfully",
+      user:updateUser
     });
   } catch (error) {
     next(error);

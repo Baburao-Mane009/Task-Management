@@ -6,13 +6,19 @@ async function apiRequest(endpoint,method="GET",body=null){
       if(!token){
         throw new Error("token is expired ! please log in again");
       }
+
+      const isFormData=  body instanceof FormData;
+const headers={
+       "Authorization":`Bearer ${token}`
+}
+
+      if(!isFormData){
+        headers["content-type"]="application/json"
+      }
      const response= await fetch(url,{
         method:method,
-        headers:{
-            "Content-Type":"application/json",
-            "Authorization":`Bearer ${token}`
-        },
-        body:body?JSON.stringify(body):undefined
+        headers,
+        body:body?isFormData?body:JSON.stringify(body):undefined
     
     });
      

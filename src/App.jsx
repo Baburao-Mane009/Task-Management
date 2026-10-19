@@ -16,6 +16,7 @@ function App() {
 
   const [user, setUser] = useState(null);
   const [loadingUser, setLoadingUser] = useState(false);
+  const[activeSection,setActiveSection] = useState("tasks");
 
   useEffect(() => {
     if (!isLogdin) {
@@ -57,7 +58,37 @@ function App() {
     };
   }, [isLogdin]);
 
+    async function handleProfilePictureChange(event){
+      const file=event.target.files[0];
 
+      if(!file){
+        return;
+      }
+   try{
+         const formData=new FormData();
+      formData.append("photo",file);
+            const response =await apiRequest("/cloud-upload","post",formData);
+
+            const data=response.json();
+              if (!response.ok) {
+      throw new Error(data.message || "Profile picture upload failed");
+    }
+
+    handleProfileUpdate(data.user);
+
+    alert("file uploaded sucessfully");
+
+    
+
+
+   }catch(err){
+                console.error("Profile picture upload failed:", err);
+    alert(err.message || "Something went wrong while uploading.");
+   }finally{
+     event.target.value = "";
+   }
+     
+    }
    function handleProfileUpdate(updatedUser){
     setUser(updatedUser);
    }
@@ -83,7 +114,7 @@ function App() {
           />
 
           <div className="main-content">
-            <SideBar />
+            <SideBar  activeSection={activeSection} onSectionChange={setActiveSection} />
 
             <div>
               {user && (
@@ -98,15 +129,16 @@ function App() {
                   />
 
                   <label htmlFor="profile-upload" className="change-profile-btn" >update profile photo </label>
-                  <input  id="profile-upload" type="file" accept="images/*" hidden ></input>
+                  <input  id="profile-upload" type="file" accept="image/*" hidden onChange={handleProfilePictureChange} ></input>
                   
-                       <button >updateProfilr pic </button>
+                      
                   <div>
                     <h2>{user.name}</h2>
                     <p>{user.email}</p>
                   </div>
                 </section>
               )}
+              <p> actibe section :{activeSection}</p>
 
               <TaskCard />
             </div>

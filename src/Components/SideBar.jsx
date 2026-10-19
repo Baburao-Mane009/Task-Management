@@ -1,19 +1,30 @@
 import "./SideBar.css";
-function SideBar(){
+function SideBar({activeSection ,onSectionChange}){
+
+   const sections=[{label:"DashBoard"  ,value:"dashboard"},
+    {label:"Profile"  ,value:"profile"},
+    {label:"Tasks"  ,value:"tasks"},
+    {label:"Completed"  ,value:"completed"}
+   ]
+
     return (
- <div className="SideBar"> 
+ 
+        <div className="SideBar">
+          <ul className="Unorder">
+             {
+              sections.map((el)=>(
+                <li key={el.label} onClick={()=>(onSectionChange(el.value))}  className={
+              activeSection === el.value ? "active-section" : ""
+            } >{el.label}</li>
+              ))
+             }
+
+            </ul> 
 
 
-  <ul className="Unorder">
-    <li>DashBoard</li>
-    <li>task</li>
-    <li>Completed</li>
-    <li>Profile</li>
-  </ul>
- </div>
-  
-
-
+        </div>
+        
+        
     )
 }
 export default SideBar;
